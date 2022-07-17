@@ -140,13 +140,11 @@ const linkElement = screen.getByRole('link', {name: /learn react/i} );
 
 # ESLint + Prettier special confs for testing
 
-- npm i eslint-plugin-testing-library
-  "ESLint plugin to follow best practices and anticipate common mistakes when writing tests with Testing Library"
-  [Go](https://github.com/testing-library/eslint-plugin-testing-library)
+"ESLint plugin to follow best practices and anticipate common mistakes when writing tests with Testing Library"
+[Go](https://github.com/testing-library/eslint-plugin-testing-library)
 
-- npm i eslint-plugin-jest-dom
-  "ESLint plugin to follow best practices and anticipate common mistakes when writing tests with jest-dom."
-  [Go](https://www.npmjs.com/package/eslint-plugin-jest-dom)
+"ESLint plugin to follow best practices and anticipate common mistakes when writing tests with jest-dom."
+[Go](https://www.npmjs.com/package/eslint-plugin-jest-dom)
 
 ## ESLint conf
 
