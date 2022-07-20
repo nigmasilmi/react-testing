@@ -265,3 +265,91 @@ is running before the element disappears, so we need to wait for that
 ```
 
 - take into account the implicit return, with an explicit return, the test fails
+
+# Mocking data coming from a server
+
+## [Mock Service Worker](https://mswjs.io/)
+
+1. Install
+
+```
+npm install msw --save-dev
+```
+
+2. Define Mocks
+   "To define which requests should be mocked, we are going to use request handler functions. They allow us to capture any request based on its method, URL, or other criteria, and specify which response to return."
+   "When working with Mock Service Worker, the list of request handlers, browser- and server-specific setup is referred to as mock definition."
+
+   ```
+   mkdir src/mocks
+   touch src/mocks/handlers.js
+   ```
+
+3. Choose an API (what if we have 2 types??)
+
+   - [ Mocking a REST API](https://mswjs.io/docs/getting-started/mocks/rest-api)
+
+     - src/mocks/handlers.js ==>
+       import { rest } from 'msw'
+     - To handle a REST API request we need to specify its method, path, and a function that would return the mocked response.
+
+     ```
+        import { rest } from 'msw'
+
+        export const handlers = [
+          // Handles a POST /login request
+          rest.post('/login', null),
+
+          // Handles a GET /user request
+          rest.get('/user', null),
+        ]
+     ```
+
+     - To respond to an intercepted request we have to specify a mocked response using a response resolver function.
+
+       - req, an information about a matching request;
+       - res, a functional utility to create the mocked response;
+       - ctx, a group of functions that help to set a status code, headers, body, etc. of the mocked response.
+
+     ```
+        import { rest } from 'msw'
+
+        export const handlers = [
+          rest.post('/login', (req, res, ctx) => {
+            // Persist user's authentication in the session
+            sessionStorage.setItem('is-authenticated', 'true')
+
+            return res(
+              // Respond with a 200 status code
+              ctx.status(200),
+            )
+          }),
+
+          rest.get('/user', (req, res, ctx) => {
+            // Check if the user is authenticated in this session
+            const isAuthenticated = sessionStorage.getItem('is-authenticated')
+
+            if (!isAuthenticated) {
+              // If not authenticated, respond with a 403 error
+              return res(
+                ctx.status(403),
+                ctx.json({
+                  errorMessage: 'Not authorized',
+                }),
+              )
+            }
+
+            // If authenticated, return a mocked user details
+            return res(
+              ctx.status(200),
+              ctx.json({
+                username: 'admin',
+              }),
+            )
+          }),
+        ]
+
+     ```
+
+   - [ Mocking a GraphQL API](https://mswjs.io/docs/getting-started/mocks/graphql-api)
+     - holamundo
