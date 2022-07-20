@@ -353,3 +353,7 @@ npm install msw --save-dev
 
    - [ Mocking a GraphQL API](https://mswjs.io/docs/getting-started/mocks/graphql-api)
      - holamundo
+
+4. [Integrate](https://mswjs.io/docs/getting-started/integrate/node)
+   "The same request handlers can be shared between browser and Node environments. Since Service Workers cannot run in Node, the integration process is different depending on the environment."
+   (see the code and this commit diff)
