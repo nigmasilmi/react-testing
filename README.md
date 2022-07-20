@@ -364,3 +364,10 @@ npm install msw --save-dev
 
 - use await and findBy
   "When you are waiting for something to appear asynchronously on the page, you must use await and findBy"
+
+## Mocking errors with Mock Server Worker
+
+- override the handlers in the test files
+  https://mswjs.io/docs/api/response
+  https://mswjs.io/docs/recipes/mocking-error-responses
+  https://mswjs.io/docs/api/setup-server/reset-handlers
