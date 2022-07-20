@@ -2,6 +2,15 @@ import { useEffect } from "react";
 import { createContext, useContext, useState, useMemo } from "react";
 import { pricePerItem } from "../constants";
 
+// format number as currency
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: 2,
+  }).format(amount);
+};
+
 const OrderDetails = createContext();
 
 // custom hook to check if we are inside a provider
@@ -17,7 +26,6 @@ export const useOrderDetails = () => {
 
 const calculateSubtotal = (optionType, optionCounts) => {
   let optionCount = 0;
-  console.log("optionCounts", optionCounts);
   for (const count of optionCounts[optionType].values()) {
     optionCount += count;
   }
@@ -31,12 +39,12 @@ export const OrderDetailsProvider = (props) => {
     scoops: new Map(),
     toppings: new Map(),
   });
-
+  const zeroCurrency = formatCurrency(0);
   // total of cost for scoops, toppings and the total to pay
   const [totals, setTotals] = useState({
-    scoops: 0,
-    toppings: 0,
-    grandTotal: 0,
+    scoops: zeroCurrency,
+    toppings: zeroCurrency,
+    grandTotal: zeroCurrency,
   });
 
   // calculations for new values of price
@@ -45,9 +53,9 @@ export const OrderDetailsProvider = (props) => {
     const toppingsSubtotal = calculateSubtotal("toppings", optionsCounts);
     const grandTotal = scoopsSubtotal + toppingsSubtotal;
     setTotals({
-      scoops: scoopsSubtotal,
-      toppings: toppingsSubtotal,
-      grandTotal,
+      scoops: formatCurrency(scoopsSubtotal),
+      toppings: formatCurrency(toppingsSubtotal),
+      grandTotal: formatCurrency(grandTotal),
     });
   }, [optionsCounts]);
 
