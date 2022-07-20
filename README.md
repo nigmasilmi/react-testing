@@ -371,3 +371,11 @@ npm install msw --save-dev
   https://mswjs.io/docs/api/response
   https://mswjs.io/docs/recipes/mocking-error-responses
   https://mswjs.io/docs/api/setup-server/reset-handlers
+
+  ## skipping tests
+
+  - run all but skip specific tests: it.skip or test.skip
+
+  ## run only specific tests
+
+  - run just the ones with it.only or test.only
