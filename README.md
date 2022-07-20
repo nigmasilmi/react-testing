@@ -200,3 +200,68 @@ in settings.json (vscode)
 "editor.defaultFormatter":"esbenp.prettier-vscode"
 "editor.formatOnSave":true
 ```
+
+# Firing Events
+
+[Go](https://testing-library.com/docs/dom-testing-library/api-events)
+
+- As the recommendation states, the better approach is to use user-event
+
+## user-event
+
+Is a companion library for Testing Library that simulates user interactions by dispatching the events that would happen if the interaction took place in a browser.
+
+https://testing-library.com/docs/user-event/intro
+
+[go to the library](https://github.com/testing-library/user-event)
+
+```
+npm i @testing-library/user-event @testing-library/dom
+```
+
+```
+import userEvent from '@testing-library/user-event'
+
+```
+
+# screen Query Methods
+
+- get: expect element to be in the DOM
+- query: expect element not to be in the DOM
+- find: expect element to appear async
+
+https://testing-library.com/docs/dom-testing-library/api-queries
+https://testing-library.com/docs/react-testing-library/cheatsheet
+https://testing-library.com/docs/guide-which-query
+
+### when an act warning appears
+
+```
+ Warning: An update to Overlay inside a test was not wrapped in act(...).
+```
+
+- React updated an element after the test finished
+- Don't wrap in act(...), because testing library already does it
+- To fix it:
+
+  - Determine what chantes after the test is over (async)
+  - Account for the change in test by:
+    - awaiting the change
+    - asserting on it
+
+- in this particular case...
+
+```
+ expect(nullPopoverAgain).not.toBeInTheDocument();
+```
+
+is running before the element disappears, so we need to wait for that
+[Guide/Recipe](https://testing-library.com/docs/guide-disappearance/)
+
+```
+ await waitForElementToBeRemoved(() =>
+      screen.queryByText(/no ice cream will actually be delivered/i)
+  );
+```
+
+- take into account the implicit return, with an explicit return, the test fails
