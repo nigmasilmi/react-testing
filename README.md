@@ -357,3 +357,10 @@ npm install msw --save-dev
 4. [Integrate](https://mswjs.io/docs/getting-started/integrate/node)
    "The same request handlers can be shared between browser and Node environments. Since Service Workers cannot run in Node, the integration process is different depending on the environment."
    (see the code and this commit 7dbdb0f diff)
+
+# When the content is not rendered by the time the tests runs
+
+## Innaccesible/Unable to find roles
+
+- use await and findBy
+  "When you are waiting for something to appear asynchronously on the page, you must use await and findBy"

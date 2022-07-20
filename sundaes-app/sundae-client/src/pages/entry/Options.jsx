@@ -10,7 +10,10 @@ const Options = ({ optionType }) => {
     // optionType is 'scoops' or 'toppings'
     axios
       .get(`http://localhost:3030/${optionType}`)
-      .then((response) => setItems(response.data))
+      .then((response) => {
+        console.log(response.data);
+        setItems(response.data);
+      })
       .catch((err) => console.log(err));
   }, [optionType]);
 
