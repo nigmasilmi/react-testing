@@ -52,16 +52,13 @@ describe("totalUpdates", () => {
   });
 });
 describe("grandTotal", () => {
-  it("starts at $0", () => {
-    render(<OrderEntry />);
-    const grandTotal = screen.getByText(/grand total/i, { exact: false });
-    // const grandTotal = screen.getByRole("heading", { name: /grand total \$/i });
-    expect(grandTotal).toHaveTextContent("0.00");
-  });
   it("updates properly if scoop is added first", async () => {
     render(<OrderEntry />);
     // const grandTotal = screen.getByRole("heading", { name: /grand total \$/i });
     const grandTotal = screen.getByText(/grand total/i, { exact: false });
+
+    // check that grand total starts out at 0.00
+    expect(grandTotal).toHaveTextContent("0.00");
 
     const vanillaInput = await screen.findByRole("spinbutton", {
       name: "Vanilla",

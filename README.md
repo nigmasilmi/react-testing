@@ -389,3 +389,12 @@ npm install msw --save-dev
 - All the content of the RTL bust be exported from that file
 - If the default render is needed, it can be imported directly from the library
 - Check testing-library.js
+
+## not wrapped in act and unmounted components error
+
+- These two errors are really indications of the same thing, basically that your component is continuing to have async updates after the test has finished.
+- How to resolve?
+  a- skip the auto cleanup, not possible on a test-by-test basis
+  b- mock useEffect, not recommended in general
+  c- include in the beginning of a test that asserts on state changes
+  if c-...what if there is no test that asserts on state changes? - solution: add awaits to the end of the test to avoid errors
