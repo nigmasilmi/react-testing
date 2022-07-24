@@ -1,11 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../test-utils/testing-library";
 import userEvent from "@testing-library/user-event";
 import Options from "../Options";
-import { OrderDetailsProvider } from "../../../context/OrderDetails";
 
 describe("totalUpdates", () => {
   it("update scoop subtotal when scoops change", async () => {
-    render(<Options optionType="scoops" />, { wrapper: OrderDetailsProvider });
+    render(<Options optionType="scoops" />);
     // make sure total starts out $0.00
     const scoopSubtotal = screen.getByText("Scoops total: $", { exact: false });
     expect(scoopSubtotal).toHaveTextContent("0.00");
@@ -25,5 +24,29 @@ describe("totalUpdates", () => {
     userEvent.clear(chocolateInput);
     userEvent.type(chocolateInput, "2");
     expect(scoopSubtotal).toHaveTextContent("6.00");
+  });
+  it("updates subtotal when toppings are selected", async () => {
+    render(<Options optionType="toppings" />);
+    // must start with subtotal of 0.00
+    const toppingsSubtotal = screen.getByText("Toppings total: $", {
+      exact: false,
+    });
+    expect(toppingsSubtotal).toHaveTextContent("0.00");
+
+    // find the checkbox
+    const peanutTopping = await screen.findByRole("checkbox", {
+      name: "Peanut butter cups",
+    });
+    userEvent.click(peanutTopping);
+    expect(toppingsSubtotal).toHaveTextContent("1.50");
+
+    const hfTopping = await screen.findByRole("checkbox", {
+      name: "Hot fudge",
+    });
+    userEvent.click(hfTopping);
+    expect(toppingsSubtotal).toHaveTextContent("3.00");
+
+    userEvent.click(peanutTopping);
+    expect(toppingsSubtotal).toHaveTextContent("1.50");
   });
 });
