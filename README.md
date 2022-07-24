@@ -379,3 +379,13 @@ npm install msw --save-dev
   ## run only specific tests
 
   - run just the ones with it.only or test.only
+
+## Custom Render
+
+- Create a test-utils file, and import form it
+- This will override the default RTL render
+- The file will have a function that receives whatever JSX we want to render and the options with the wrapper
+- That function is exported as render (overriding)
+- All the content of the RTL bust be exported from that file
+- If the default render is needed, it can be imported directly from the library
+- Check testing-library.js

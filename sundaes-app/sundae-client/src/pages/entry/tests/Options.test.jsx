@@ -1,9 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen } from "../../../test-utils/testing-library";
 import Options from "../Options";
-import { OrderDetailsProvider } from "../../../context/OrderDetails";
 describe("Scoop Options", () => {
   it("displays image for each scoop option from server", async () => {
-    render(<Options optionType="scoops" />, { wrapper: OrderDetailsProvider });
+    render(<Options optionType="scoops" />);
 
     // find images
     const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i });
@@ -11,7 +10,7 @@ describe("Scoop Options", () => {
   });
 
   it("has the correct alt text for the images", async () => {
-    render(<Options optionType="scoops" />, { wrapper: OrderDetailsProvider });
+    render(<Options optionType="scoops" />);
 
     // confirm alt text of images
     const scoopImages = await screen.findAllByRole("img", { name: /scoop$/i });
@@ -22,9 +21,7 @@ describe("Scoop Options", () => {
 
 describe("Toppings options", () => {
   it("displays image for toppings fetched from the server", async () => {
-    render(<Options optionType="toppings" />, {
-      wrapper: OrderDetailsProvider,
-    });
+    render(<Options optionType="toppings" />);
 
     // find images
     const topImages = await screen.findAllByRole("img", { name: /topping$/i });
@@ -32,9 +29,7 @@ describe("Toppings options", () => {
   });
 
   it("has the correct images alt text", async () => {
-    render(<Options optionType="toppings" />, {
-      wrapper: OrderDetailsProvider,
-    });
+    render(<Options optionType="toppings" />);
 
     const topImages = await screen.findAllByRole("img", { name: /topping$/i });
 
