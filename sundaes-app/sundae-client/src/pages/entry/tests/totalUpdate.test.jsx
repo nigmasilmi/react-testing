@@ -1,6 +1,7 @@
 import { render, screen } from "../../../test-utils/testing-library";
 import userEvent from "@testing-library/user-event";
 import Options from "../Options";
+import OrderEntry from "../OrderEntry";
 
 describe("totalUpdates", () => {
   it("update scoop subtotal when scoops change", async () => {
@@ -48,5 +49,69 @@ describe("totalUpdates", () => {
 
     userEvent.click(peanutTopping);
     expect(toppingsSubtotal).toHaveTextContent("1.50");
+  });
+});
+describe("grandTotal", () => {
+  it("starts at $0", () => {
+    render(<OrderEntry />);
+    const grandTotal = screen.getByText(/grand total/i, { exact: false });
+    // const grandTotal = screen.getByRole("heading", { name: /grand total \$/i });
+    expect(grandTotal).toHaveTextContent("0.00");
+  });
+  it("updates properly if scoop is added first", async () => {
+    render(<OrderEntry />);
+    // const grandTotal = screen.getByRole("heading", { name: /grand total \$/i });
+    const grandTotal = screen.getByText(/grand total/i, { exact: false });
+
+    const vanillaInput = await screen.findByRole("spinbutton", {
+      name: "Vanilla",
+    });
+    userEvent.clear(vanillaInput);
+    userEvent.type(vanillaInput, "2");
+    expect(grandTotal).toHaveTextContent("4.00");
+
+    const hfTopping = await screen.findByRole("checkbox", {
+      name: "Hot fudge",
+    });
+    userEvent.click(hfTopping);
+    expect(grandTotal).toHaveTextContent("5.50");
+  });
+  it("updates properly if topping is added first", async () => {
+    render(<OrderEntry />);
+    // const grandTotal = screen.getByRole("heading", { name: /grand total \$/i });
+    const grandTotal = screen.getByText(/grand total/i, { exact: false });
+
+    const hfTopping = await screen.findByRole("checkbox", {
+      name: "Hot fudge",
+    });
+    userEvent.click(hfTopping);
+    expect(grandTotal).toHaveTextContent("1.50");
+    const vanillaInput = await screen.findByRole("spinbutton", {
+      name: "Vanilla",
+    });
+    userEvent.clear(vanillaInput);
+    userEvent.type(vanillaInput, "3");
+    expect(grandTotal).toHaveTextContent("7.50");
+  });
+  it("updates properly if item is removed", async () => {
+    render(<OrderEntry />);
+    const grandTotal = screen.getByText(/grand total/i, { exact: false });
+    // const grandTotal = screen.getByRole("heading", { name: /grand total \$/i });
+
+    const vanillaInput = await screen.findByRole("spinbutton", {
+      name: "Vanilla",
+    });
+    userEvent.clear(vanillaInput);
+    userEvent.type(vanillaInput, "3");
+    expect(grandTotal).toHaveTextContent("6.00");
+    const hfTopping = await screen.findByRole("checkbox", {
+      name: "Hot fudge",
+    });
+    userEvent.click(hfTopping);
+    expect(grandTotal).toHaveTextContent("7.50");
+    userEvent.clear(vanillaInput);
+    userEvent.type(vanillaInput, "2");
+    userEvent.click(hfTopping);
+    expect(grandTotal).toHaveTextContent("4.00");
   });
 });
